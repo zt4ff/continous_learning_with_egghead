@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "react": "^18.2.0"
+  },
+  "dependencies": {
+    "react-dom": "^18.2.0"
+  }
+}
