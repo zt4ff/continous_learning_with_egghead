@@ -1,0 +1,95 @@
+<html>
+  <head>
+    <title>test</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js" integrity="sha512-K9tDZvc8nQXR1DMuT97sct9f40dilGp97vx7EXjswJA+/mKqJZ8vcZLifZDP+9t08osMLuiIjd4jZ0SM011Q+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel"> 
+        const rootElement = document.getElementById("root");
+
+        const {useEffect, useState, useRef} = React
+
+        const useLocalStorage = (key) => {
+          const [state, setState] = useState(() => window.localStorage.getItem(key) || null)
+
+          useEffect(() => {
+            window.localStorage.setItem(key, state)
+          }, [key, state])
+
+          useEffect(() => {
+            window.localStorage.clear(key)
+          }, [key])
+
+          return [state, setState]
+        } 
+  
+        const Component = () => {
+          const [key, setKey] = useState("james")
+          const [name, setName] = useLocalStorage(key)
+
+          return <>
+          <div>
+            <p>{`The value you inputed is ${name}`}</p>
+            <input value={name} onChange={(e) => setName(e.target.value)} />
+            <br />
+            <button onClick={() => setKey("jonah") }>Change Key</button>
+          </div>
+          </>
+        }
+
+        const TiltDiv = () => {
+          const styling = {
+            width: 500,
+            height: 500,
+            backgroundImage: "linear-gradient(125deg, magenta, red)"
+          }
+          const tiltRef = useRef()
+
+          useEffect(() => {
+            const tiltNode = tiltRef.current
+            const vanillaTiltOption = {
+              max: 25,
+              speed: 400, 
+              glare: true, 
+              "max-glare": 0.5
+            }
+            console.log(tiltNode)
+            VanillaTilt.init(tiltNode, vanillaTiltOption)
+          } )
+
+          return <div ref={tiltRef} style={styling}></div>
+        }
+
+        const Form = () => {
+
+          const handlesSubmit = (event) => {
+            event
+          }
+
+          return <form>
+            <label htmlFor="name">Enter your namee</label>
+            <input id="name" name="name" />
+            </form>
+        }
+
+        const App = () => (<>
+          <Component />
+          <TiltDiv />
+        </>)
+
+
+        ReactDOM.render(<App />, rootElement);
+      </script>
+  </body>
+</html>
